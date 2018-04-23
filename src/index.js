@@ -1,12 +1,20 @@
-// it('Diff flat JSONs', () => {
-//   const json1 = JSON.parse(fs.readFileSync('./__tests__/__fixtures__/flat1.json', 'utf8'));
-//   const json2 = JSON.parse(fs.readFileSync('./__tests__/__fixtures__/flat2.json', 'utf8'));
-//   const actual = genDiff(json1, json2);
-//   const expected = fs.readFileSync('./__tests__/__fixtures__/flatDiff.diff', 'utf8');
-//   expect(actual).toBe(expected);
-// });
-const genDiff = (data1, data2) => {
-  
+import { has } from 'lodash';
+
+const genDiff = (obj1, obj2) => {
+  const compareResult = Object.keys({ ...obj1, ...obj2 })
+    .reduce((acc, key) => {
+      if (!has(obj1, key)) {
+        return [...acc, `  + ${key}: ${obj2[key]}`];
+      }
+      if (!has(obj2, key)) {
+        return [...acc, `  - ${key}: ${obj1[key]}`];
+      }
+      if (obj1[key] === obj2[key]) {
+        return [...acc, `    ${key}: ${obj1[key]}`];
+      }
+      return [...acc, `  + ${key}: ${obj2[key]}\n  - ${key}: ${obj1[key]}`];
+    }, []);
+  return ['{', ...compareResult, '}'].join('\n');
 };
 
 export default genDiff;
