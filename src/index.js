@@ -4,8 +4,13 @@ import { has } from 'lodash';
 import getParser from './parsers';
 
 const genDiff = (path1, path2) => {
-  const obj1 = getParser(extname(path1))(readFileSync(path1, 'utf8'));
-  const obj2 = getParser(extname(path2))(readFileSync(path2, 'utf8'));
+  const ext1 = extname(path1);
+  const data1 = readFileSync(path1, 'utf8');
+  const obj1 = getParser(ext1)(data1);
+
+  const ext2 = extname(path2);
+  const data2 = readFileSync(path2, 'utf8');
+  const obj2 = getParser(ext2)(data2);
 
   const compareResult = Object.keys({ ...obj1, ...obj2 })
     .reduce((acc, key) => {
