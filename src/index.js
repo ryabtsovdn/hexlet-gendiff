@@ -1,7 +1,10 @@
 import fs from 'fs';
 import { has } from 'lodash';
 
-const genDiff = (obj1, obj2) => {
+const genDiff = (path1, path2) => {
+  const obj1 = JSON.parse(fs.readFileSync(path1, 'utf8'));
+  const obj2 = JSON.parse(fs.readFileSync(path2, 'utf8'));
+
   const compareResult = Object.keys({ ...obj1, ...obj2 })
     .reduce((acc, key) => {
       if (!has(obj1, key)) {
@@ -15,13 +18,8 @@ const genDiff = (obj1, obj2) => {
       }
       return [...acc, `  + ${key}: ${obj2[key]}\n  - ${key}: ${obj1[key]}`];
     }, []);
-  return ['{', ...compareResult, '}'].join('\n');
-};
 
-export const compareFiles = (path1, path2) => {
-  const json1 = JSON.parse(fs.readFileSync(path1, 'utf8'));
-  const json2 = JSON.parse(fs.readFileSync(path2, 'utf8'));
-  return genDiff(json1, json2);
+  return ['{', ...compareResult, '}'].join('\n');
 };
 
 export default genDiff;
