@@ -1,8 +1,24 @@
-import fs from 'fs';
+import { readFileSync } from 'fs';
 import genDiff from '../src';
 
-it('Diff flat JSONs', () => {
-  const actual = genDiff('./__tests__/__fixtures__/flat1.json', './__tests__/__fixtures__/flat2.json');
-  const expected = fs.readFileSync('./__tests__/__fixtures__/flatDiff.diff', 'utf8');
-  expect(actual).toBe(expected);
+describe('Tests', () => {
+  it('Diff flat JSONs', () => {
+    const actual = genDiff('./__tests__/__fixtures__/flat1.json', './__tests__/__fixtures__/flat2.json');
+    const expected = readFileSync('./__tests__/__fixtures__/flatJSON.diff', 'utf8');
+    expect(actual).toBe(expected);
+  });
+
+  it('Diff flat YAMLs', () => {
+    const actual = genDiff('./__tests__/__fixtures__/flat1.yml', './__tests__/__fixtures__/flat2.yml');
+    const expected = readFileSync('./__tests__/__fixtures__/flatYAML.diff', 'utf8');
+    expect(actual).toBe(expected);
+  });
+
+  it('Unsupported format', () => {
+    try {
+      genDiff('./__tests__/__fixtures__/flat1.docx', './__tests__/__fixtures__/flat2.docx');
+    } catch (error) {
+      expect(error.message).toBe('File has unsupported format: .docx');
+    }
+  });
 });
