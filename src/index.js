@@ -1,6 +1,6 @@
 import { readFileSync } from 'fs';
 import { extname } from 'path';
-import { has } from 'lodash';
+import { has, flatten } from 'lodash';
 import getParser from './parsers';
 
 const genDiff = (path1, path2) => {
@@ -23,10 +23,10 @@ const genDiff = (path1, path2) => {
       if (obj1[key] === obj2[key]) {
         return [...acc, `    ${key}: ${obj1[key]}`];
       }
-      return [...acc, `  + ${key}: ${obj2[key]}\n  - ${key}: ${obj1[key]}`];
+      return [...acc, [`  + ${key}: ${obj2[key]}`, `  - ${key}: ${obj1[key]}`]];
     }, []);
 
-  return ['{', ...compareResult, '}'].join('\n');
+  return ['{', ...flatten(compareResult), '}'].join('\n');
 };
 
 export default genDiff;
