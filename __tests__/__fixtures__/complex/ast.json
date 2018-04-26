@@ -1,0 +1,103 @@
+{
+  "name": "",
+  "type": "merged",
+  "children": [
+    {
+      "name": "common",
+      "type": "merged",
+      "children": [
+        {
+          "name": "setting1",
+          "type": "unchanged",
+          "value": "Value 1"
+        },
+        {
+          "name": "setting2",
+          "type": "deleted",
+          "value": "200"
+        },
+        {
+          "name": "setting3",
+          "type": "changed",
+          "value": [
+            true,
+            {
+              "key": "value"
+            }
+          ]
+        },
+        {
+          "name": "setting6",
+          "type": "merged",
+          "children": [
+            {
+              "name": "key",
+              "type": "unchanged",
+              "value": "value"
+            },
+            {
+              "name": "ops",
+              "type": "added",
+              "value": "vops"
+            }
+          ]
+        },
+        {
+          "name": "setting4",
+          "type": "added",
+          "value": "blah blah"
+        },
+        {
+          "name": "setting5",
+          "type": "added",
+          "value": {
+            "key5": "value5"
+          }
+        }
+      ]
+    },
+    {
+      "name": "group1",
+      "type": "merged",
+      "children": [
+        {
+          "name": "baz",
+          "type": "changed",
+          "value": [
+            "bas",
+            "bars"
+          ]
+        },
+        {
+          "name": "foo",
+          "type": "unchanged",
+          "value": "bar"
+        },
+        {
+          "name": "nest",
+          "type": "changed",
+          "value": [
+            {
+              "key": "value"
+            },
+            "str"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "group2",
+      "type": "deleted",
+      "value": {
+        "abc": "12345"
+      }
+    },
+    {
+      "name": "group3",
+      "type": "added",
+      "value": {
+        "fee": "100500"
+      }
+    }
+  ]
+}
