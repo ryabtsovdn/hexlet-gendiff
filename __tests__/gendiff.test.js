@@ -1,7 +1,7 @@
 import { readFileSync } from 'fs';
 import { safeLoad } from 'js-yaml';
 import ini from 'ini';
-import { genDiff, genAST } from '../src';
+import genDiff, { genAST } from '../src';
 
 describe('complex fixtures', () => {
   it('have an appropriate content', () => {
@@ -36,29 +36,29 @@ describe('genAST', () => {
 });
 
 describe('genDiff', () => {
-  const expectedFlat = readFileSync('./__tests__/__fixtures__/flat/flat.diff', 'utf8');
+  const expectedFlat = readFileSync('./__tests__/__fixtures__/flat/result.diff', 'utf8');
   const expectedComplex = readFileSync('./__tests__/__fixtures__/complex/result.diff', 'utf8');
 
   it('should compare flat JSONs', () => {
     const actual = genDiff(
-      './__tests__/__fixtures__/flat/flat1.json',
-      './__tests__/__fixtures__/flat/flat2.json',
+      './__tests__/__fixtures__/flat/before.json',
+      './__tests__/__fixtures__/flat/after.json',
     );
     expect(actual).toBe(expectedFlat);
   });
 
   it('should compare flat YAMLs', () => {
     const actual = genDiff(
-      './__tests__/__fixtures__/flat/flat1.yml',
-      './__tests__/__fixtures__/flat/flat2.yml',
+      './__tests__/__fixtures__/flat/before.yml',
+      './__tests__/__fixtures__/flat/after.yml',
     );
     expect(actual).toBe(expectedFlat);
   });
 
   it('should compare flat INIs', () => {
     const actual = genDiff(
-      './__tests__/__fixtures__/flat/flat1.ini',
-      './__tests__/__fixtures__/flat/flat2.ini',
+      './__tests__/__fixtures__/flat/before.ini',
+      './__tests__/__fixtures__/flat/after.ini',
     );
     expect(actual).toBe(expectedFlat);
   });
@@ -66,8 +66,8 @@ describe('genDiff', () => {
   it('should throw unsupported format error', () => {
     try {
       genDiff(
-        './__tests__/__fixtures__/flat/flat1.docx',
-        './__tests__/__fixtures__/flat/flat2.docx',
+        './__tests__/__fixtures__/flat/before.docx',
+        './__tests__/__fixtures__/flat/after.docx',
       );
     } catch (error) {
       expect(error.message).toBe('File has unsupported format: .docx');
@@ -78,6 +78,22 @@ describe('genDiff', () => {
     const actual = genDiff(
       './__tests__/__fixtures__/complex/before.json',
       './__tests__/__fixtures__/complex/after.json',
+    );
+    expect(actual).toBe(expectedComplex);
+  });
+
+  it('should compare complex YAMLs', () => {
+    const actual = genDiff(
+      './__tests__/__fixtures__/complex/before.yml',
+      './__tests__/__fixtures__/complex/after.yml',
+    );
+    expect(actual).toBe(expectedComplex);
+  });
+
+  it('should compare complex INIs', () => {
+    const actual = genDiff(
+      './__tests__/__fixtures__/complex/before.ini',
+      './__tests__/__fixtures__/complex/after.ini',
     );
     expect(actual).toBe(expectedComplex);
   });
