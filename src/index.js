@@ -7,27 +7,23 @@ import render from './renders';
 const makeLeaf = (name, type, value) =>
   ({ name, type, value });
 
-const makeBranch = (name, type, obj1, obj2) =>
-  ({
-    name,
-    type,
-    children: Object.keys({ ...obj1, ...obj2 })
-      .map((key) => {
-        if (!has(obj1, key)) {
-          return makeLeaf(key, 'added', obj2[key]);
-        }
-        if (!has(obj2, key)) {
-          return makeLeaf(key, 'deleted', obj1[key]);
-        }
-        if (isObject(obj1[key]) && isObject(obj2[key])) {
-          return makeBranch(key, 'merged', obj1[key], obj2[key]);
-        }
-        if (obj1[key] === obj2[key]) {
-          return makeLeaf(key, 'unchanged', obj1[key]);
-        }
-        return makeLeaf(key, 'changed', [obj1[key], obj2[key]]);
-      }),
-  });
+const makeBranch = (name, type, obj1, obj2) => {
+  const branch = { name, type };
+  branch.children = Object.keys({ ...obj1, ...obj2 })
+    .map((key) => {
+      if (!has(obj1, key)) {
+        return makeLeaf(key, 'added', obj2[key]);
+      } else if (!has(obj2, key)) {
+        return makeLeaf(key, 'deleted', obj1[key]);
+      } else if (isObject(obj1[key]) && isObject(obj2[key])) {
+        return makeBranch(key, 'merged', obj1[key], obj2[key]);
+      } else if (obj1[key] === obj2[key]) {
+        return makeLeaf(key, 'unchanged', obj1[key]);
+      }
+      return makeLeaf(key, 'changed', [obj1[key], obj2[key]]);
+    });
+  return branch;
+};
 
 export const genAST = (obj1, obj2) =>
   makeBranch('', 'merged', obj1, obj2);

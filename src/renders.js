@@ -21,13 +21,16 @@ const stringify = (value, deep) => {
     .replace(/"/g, '');
 };
 
+const getDiffString = (name, value, deep, mod) =>
+  `${indent(deep)}${mod}${name}: ${stringify(value, deep)}`;
+
 const builders = {
-  unchanged: ({ name, value }, deep) => `${indent(deep)}  ${name}: ${stringify(value, deep)}`,
-  added: ({ name, value }, deep) => `${indent(deep)}+ ${name}: ${stringify(value, deep)}`,
-  deleted: ({ name, value }, deep) => `${indent(deep)}- ${name}: ${stringify(value, deep)}`,
+  unchanged: ({ name, value }, deep) => getDiffString(name, value, deep, '  '),
+  deleted: ({ name, value }, deep) => getDiffString(name, value, deep, '- '),
+  added: ({ name, value }, deep) => getDiffString(name, value, deep, '+ '),
   changed: ({ name, value: [before, after] }, deep) => [
-    `${indent(deep)}- ${name}: ${stringify(before, deep)}`,
-    `${indent(deep)}+ ${name}: ${stringify(after, deep)}`,
+    getDiffString(name, before, deep, '- '),
+    getDiffString(name, after, deep, '+ '),
   ],
   merged: (node, deep) => {
     const { name, children } = node;
