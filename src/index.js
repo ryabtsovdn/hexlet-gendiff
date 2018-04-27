@@ -4,25 +4,36 @@ import { has, isObject } from 'lodash';
 import getParser from './parsers';
 import render from './renders';
 
-const makeLeaf = (name, type, value) =>
-  ({ name, type, value });
+const makeLeaf = (name, type, valueBefore, valueAfter) => {
+  if (type === 'changed') {
+    return {
+      name,
+      type,
+      valueBefore,
+      valueAfter,
+    };
+  }
+  return { name, type, value: valueBefore };
+};
 
 const makeBranch = (name, type, obj1, obj2) => {
-  const branch = { name, type };
-  branch.children = Object.keys({ ...obj1, ...obj2 })
+  const children = Object.keys({ ...obj1, ...obj2 })
     .map((key) => {
       if (!has(obj1, key)) {
         return makeLeaf(key, 'added', obj2[key]);
-      } else if (!has(obj2, key)) {
+      }
+      if (!has(obj2, key)) {
         return makeLeaf(key, 'deleted', obj1[key]);
-      } else if (isObject(obj1[key]) && isObject(obj2[key])) {
+      }
+      if (isObject(obj1[key]) && isObject(obj2[key])) {
         return makeBranch(key, 'merged', obj1[key], obj2[key]);
-      } else if (obj1[key] === obj2[key]) {
+      }
+      if (obj1[key] === obj2[key]) {
         return makeLeaf(key, 'unchanged', obj1[key]);
       }
-      return makeLeaf(key, 'changed', [obj1[key], obj2[key]]);
+      return makeLeaf(key, 'changed', obj1[key], obj2[key]);
     });
-  return branch;
+  return { name, type, children };
 };
 
 export const genAST = (obj1, obj2) =>

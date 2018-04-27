@@ -1,8 +1,8 @@
 import { flattenDeep, isObject } from 'lodash';
 
-const indent = size => '  '.repeat(size);
+const indent = tab => '  '.repeat(tab);
 
-const stringify = (value, deep) => {
+const stringify = (value, tab) => {
   if (!isObject(value)) {
     return value;
   }
@@ -13,38 +13,48 @@ const stringify = (value, deep) => {
         return str;
       }
       if (index === arr.length - 1) {
-        return `${indent(deep + 1)}${str}`;
+        return `${indent(tab + 1)}${str}`;
       }
-      return `${indent(deep + 2)}${str}`;
+      return `${indent(tab + 2)}${str}`;
     })
     .join('\n')
     .replace(/"/g, '');
 };
 
-const getDiffString = (name, value, deep, mod) =>
-  `${indent(deep)}${mod}${name}: ${stringify(value, deep)}`;
+const getDiffString = (name, value, tab, mod) =>
+  `${indent(tab)}${mod}${name}: ${stringify(value, tab)}`;
 
 const builders = {
-  unchanged: ({ name, value }, deep) => getDiffString(name, value, deep, '  '),
-  deleted: ({ name, value }, deep) => getDiffString(name, value, deep, '- '),
-  added: ({ name, value }, deep) => getDiffString(name, value, deep, '+ '),
-  changed: ({ name, value: [before, after] }, deep) => [
-    getDiffString(name, before, deep, '- '),
-    getDiffString(name, after, deep, '+ '),
+  unchanged: ({ name, value }, tab) => getDiffString(name, value, tab, '  '),
+  deleted: ({ name, value }, tab) => getDiffString(name, value, tab, '- '),
+  added: ({ name, value }, tab) => getDiffString(name, value, tab, '+ '),
+  changed: ({ name, valueBefore, valueAfter }, tab) => [
+    getDiffString(name, valueBefore, tab, '- '),
+    getDiffString(name, valueAfter, tab, '+ '),
   ],
-  merged: (node, deep) => {
-    const { name, children } = node;
+  merged: (tree, tab) => {
+    const { name, children } = tree;
     return [
-      deep === -1 ? '{' : `${indent(deep + 1)}${name}: {`,
-      children.map((child) => {
-        const build = builders[child.type];
-        return build(child, deep + 2);
+      `${indent(tab + 1)}${name}: {`,
+      children.map((node) => {
+        const build = builders[node.type];
+        return build(node, tab + 2);
       }),
-      `${indent(deep + 1)}}`,
+      `${indent(tab + 1)}}`,
     ];
   },
 };
 
-const render = ast => flattenDeep(builders.merged(ast, -1)).join('\n');
+const render = ({ children }) => {
+  const builded = [
+    '{',
+    children.map((node) => {
+      const build = builders[node.type];
+      return build(node, 1);
+    }),
+    '}',
+  ];
+  return flattenDeep(builded).join('\n');
+};
 
 export default render;
