@@ -4,32 +4,28 @@ import { has, isObject } from 'lodash';
 import getParser from './parsers';
 import render from './renders';
 
-const makeLeaf = (name, type, valueBefore, valueAfter) => {
-  if (type === 'changed') {
-    return {
-      name,
-      type,
-      valueBefore,
-      valueAfter,
-    };
-  }
-  return { name, type, value: valueBefore };
-};
+const makeLeaf = (name, type, oldValue, newValue) =>
+  ({
+    name,
+    type,
+    oldValue,
+    newValue,
+  });
 
 const makeBranch = (name, type, obj1, obj2) => {
   const children = Object.keys({ ...obj1, ...obj2 })
     .map((key) => {
       if (!has(obj1, key)) {
-        return makeLeaf(key, 'added', obj2[key]);
+        return makeLeaf(key, 'added', '', obj2[key]);
       }
       if (!has(obj2, key)) {
-        return makeLeaf(key, 'deleted', obj1[key]);
+        return makeLeaf(key, 'deleted', obj1[key], '');
       }
       if (isObject(obj1[key]) && isObject(obj2[key])) {
         return makeBranch(key, 'merged', obj1[key], obj2[key]);
       }
       if (obj1[key] === obj2[key]) {
-        return makeLeaf(key, 'unchanged', obj1[key]);
+        return makeLeaf(key, 'unchanged', obj1[key], obj1[key]);
       }
       return makeLeaf(key, 'changed', obj1[key], obj2[key]);
     });

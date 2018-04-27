@@ -25,12 +25,12 @@ const getDiffString = (name, value, tab, mod) =>
   `${indent(tab)}${mod}${name}: ${stringify(value, tab)}`;
 
 const builders = {
-  unchanged: ({ name, value }, tab) => getDiffString(name, value, tab, '  '),
-  deleted: ({ name, value }, tab) => getDiffString(name, value, tab, '- '),
-  added: ({ name, value }, tab) => getDiffString(name, value, tab, '+ '),
-  changed: ({ name, valueBefore, valueAfter }, tab) => [
-    getDiffString(name, valueBefore, tab, '- '),
-    getDiffString(name, valueAfter, tab, '+ '),
+  unchanged: ({ name, oldValue }, tab) => getDiffString(name, oldValue, tab, '  '),
+  deleted: ({ name, oldValue }, tab) => getDiffString(name, oldValue, tab, '- '),
+  added: ({ name, newValue }, tab) => getDiffString(name, newValue, tab, '+ '),
+  changed: ({ name, oldValue, newValue }, tab) => [
+    getDiffString(name, oldValue, tab, '- '),
+    getDiffString(name, newValue, tab, '+ '),
   ],
   merged: (tree, tab) => {
     const { name, children } = tree;
