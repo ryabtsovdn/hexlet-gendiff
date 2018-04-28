@@ -45,7 +45,8 @@ const builders = {
   },
 };
 
-const render = ({ children }) => {
+
+export default ({ children }) => {
   const builded = [
     '{',
     children.map((node) => {
@@ -56,5 +57,3 @@ const render = ({ children }) => {
   ];
   return flattenDeep(builded).join('\n');
 };
-
-export default render;

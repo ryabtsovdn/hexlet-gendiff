@@ -2,26 +2,26 @@ import { readFileSync } from 'fs';
 import { extname } from 'path';
 import { has, isObject, find } from 'lodash';
 import getParser from './parsers';
-import render from './renders';
-
-const makeNode = (name, type, oldValue, newValue) =>
-  ({
-    name,
-    type,
-    oldValue,
-    newValue,
-  });
+import getRenderer from './renderers';
 
 const diffTypes = [
   {
     type: 'added',
     check: (obj1, obj2, key) => !has(obj1, key),
-    process: (obj1, obj2, key) => makeNode(key, 'added', '', obj2[key]),
+    process: (obj1, obj2, key) => ({
+      name: key,
+      type: 'added',
+      newValue: obj2[key],
+    }),
   },
   {
     type: 'deleted',
     check: (obj1, obj2, key) => !has(obj2, key),
-    process: (obj1, obj2, key) => makeNode(key, 'deleted', obj1[key], ''),
+    process: (obj1, obj2, key) => ({
+      name: key,
+      type: 'deleted',
+      oldValue: obj1[key],
+    }),
   },
   {
     type: 'merged',
@@ -31,12 +31,22 @@ const diffTypes = [
   {
     type: 'unchanged',
     check: (obj1, obj2, key) => obj1[key] === obj2[key],
-    process: (obj1, obj2, key) => makeNode(key, 'unchanged', obj1[key], obj2[key]),
+    process: (obj1, obj2, key) => ({
+      name: key,
+      type: 'unchanged',
+      oldValue: obj1[key],
+      newValue: obj2[key],
+    }),
   },
   {
     type: 'changed',
     check: (obj1, obj2, key) => obj1[key] !== obj2[key],
-    process: (obj1, obj2, key) => makeNode(key, 'changed', obj1[key], obj2[key]),
+    process: (obj1, obj2, key) => ({
+      name: key,
+      type: 'changed',
+      oldValue: obj1[key],
+      newValue: obj2[key],
+    }),
   },
 ];
 
@@ -49,7 +59,7 @@ export const genAST = (obj1, obj2, name = '') => {
   return { name, type: 'merged', children };
 };
 
-const genDiff = (path1, path2) => {
+const genDiff = (path1, path2, format = 'default') => {
   const ext1 = extname(path1);
   const data1 = readFileSync(path1, 'utf8');
   const obj1 = getParser(ext1)(data1);
@@ -59,7 +69,8 @@ const genDiff = (path1, path2) => {
   const obj2 = getParser(ext2)(data2);
 
   const ast = genAST(obj1, obj2);
-  return render(ast);
+  const renderer = getRenderer(format);
+  return renderer.toString(ast);
 };
 
 export default genDiff;

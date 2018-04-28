@@ -15,8 +15,7 @@
         {
           "name": "setting2",
           "type": "deleted",
-          "oldValue": "200",
-          "newValue": ""
+          "oldValue": "200"
         },
         {
           "name": "setting3",
@@ -39,7 +38,6 @@
             {
               "name": "ops",
               "type": "added",
-              "oldValue": "",
               "newValue": "vops"
             }
           ]
@@ -47,13 +45,11 @@
         {
           "name": "setting4",
           "type": "added",
-          "oldValue": "",
           "newValue": "blah blah"
         },
         {
           "name": "setting5",
           "type": "added",
-          "oldValue": "",
           "newValue": {
             "key5": "value5"
           }
@@ -91,13 +87,11 @@
       "type": "deleted",
       "oldValue": {
         "abc": "12345"
-      },
-      "newValue": ""
+      }
     },
     {
       "name": "group3",
       "type": "added",
-      "oldValue": "",
       "newValue": {
         "fee": "100500"
       }
