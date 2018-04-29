@@ -32,28 +32,20 @@ const builders = {
     getDiffString(name, oldValue, tab, '- '),
     getDiffString(name, newValue, tab, '+ '),
   ],
-  merged: (tree, tab) => {
-    const { name, children } = tree;
-    return [
-      `${indent(tab + 1)}${name}: {`,
-      children.map((node) => {
-        const build = builders[node.type];
-        return build(node, tab + 2);
-      }),
-      `${indent(tab + 1)}}`,
-    ];
-  },
+  merged: ({ name, children }, tab, cb) => [
+    `${indent(tab + 1)}${name}: {`,
+    cb(children, tab + 1),
+    `${indent(tab + 1)}}`,
+  ],
 };
 
+const buildMerged = (tree, tab) =>
+  tree.map((node) => {
+    const build = builders[node.type];
+    return build(node, tab + 1, buildMerged);
+  });
 
-export default ({ children }) => {
-  const builded = [
-    '{',
-    children.map((node) => {
-      const build = builders[node.type];
-      return build(node, 1);
-    }),
-    '}',
-  ];
+export default (ast) => {
+  const builded = ['{', buildMerged(ast, 0), '}'];
   return flattenDeep(builded).join('\n');
 };

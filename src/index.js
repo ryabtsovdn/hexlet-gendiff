@@ -26,7 +26,7 @@ const diffTypes = [
   {
     type: 'merged',
     check: (obj1, obj2, key) => isObject(obj1[key]) && isObject(obj2[key]),
-    process: (obj1, obj2, key, cb) => cb(obj1[key], obj2[key], key),
+    process: (obj1, obj2, key, cb) => ({ name: key, type: 'merged', children: cb(obj1[key], obj2[key]) }),
   },
   {
     type: 'unchanged',
@@ -50,14 +50,15 @@ const diffTypes = [
   },
 ];
 
-export const genAST = (obj1, obj2, name = '') => {
+const buildMerged = (obj1, obj2) => {
   const keys = Object.keys({ ...obj1, ...obj2 });
-  const children = keys.map((key) => {
+  return keys.map((key) => {
     const { process } = find(diffTypes, ({ check }) => check(obj1, obj2, key));
-    return process(obj1, obj2, key, genAST);
+    return process(obj1, obj2, key, buildMerged);
   });
-  return { name, type: 'merged', children };
 };
+
+export const genAST = (obj1, obj2) => buildMerged(obj1, obj2);
 
 const genDiff = (path1, path2, format = 'tree') => {
   const ext1 = extname(path1);

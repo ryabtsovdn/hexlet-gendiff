@@ -147,7 +147,8 @@ describe('genDiff json', () => {
       './__tests__/__fixtures__/flat/after.json',
       'json',
     );
-    expect(actual).toBe(expectedFlat);
+
+    expect(JSON.parse(actual)).toEqual(JSON.parse(expectedFlat));
   });
 
   it('should compare flat YAMLs', () => {
@@ -156,7 +157,8 @@ describe('genDiff json', () => {
       './__tests__/__fixtures__/flat/after.yml',
       'json',
     );
-    expect(actual).toBe(expectedFlat);
+
+    expect(JSON.parse(actual)).toEqual(JSON.parse(expectedFlat));
   });
 
   it('should compare flat INIs', () => {
@@ -165,7 +167,8 @@ describe('genDiff json', () => {
       './__tests__/__fixtures__/flat/after.ini',
       'json',
     );
-    expect(actual).toBe(expectedFlat);
+    console.log(actual);
+    expect(JSON.parse(actual)).toEqual(JSON.parse(expectedFlat));
   });
 
   it('should compare complex JSONs', () => {
@@ -174,7 +177,8 @@ describe('genDiff json', () => {
       './__tests__/__fixtures__/complex/after.json',
       'json',
     );
-    expect(actual).toBe(expectedComplex);
+
+    expect(JSON.parse(actual)).toEqual(JSON.parse(expectedComplex));
   });
 
   it('should compare complex YAMLs', () => {
@@ -183,7 +187,8 @@ describe('genDiff json', () => {
       './__tests__/__fixtures__/complex/after.yml',
       'json',
     );
-    expect(actual).toBe(expectedComplex);
+
+    expect(JSON.parse(actual)).toEqual(JSON.parse(expectedComplex));
   });
 
   it('should compare complex INIs', () => {
@@ -192,6 +197,7 @@ describe('genDiff json', () => {
       './__tests__/__fixtures__/complex/after.ini',
       'json',
     );
-    expect(actual).toBe(expectedComplex);
+
+    expect(JSON.parse(actual)).toEqual(JSON.parse(expectedComplex));
   });
 });

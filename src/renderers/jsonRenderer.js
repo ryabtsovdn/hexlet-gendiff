@@ -1,8 +1,12 @@
-const getKeysOfType = ({ children }, type, path = '') =>
-  children.reduce((acc, value) => {
-    const newAcc = value.type === type ? [...acc, `${path}${value.name}`] : acc;
-    if (value.type === 'merged') {
-      return [...newAcc, ...getKeysOfType(value, type, `${path}${value.name}.`)];
+const getKeysOfType = (tree, typeToSearch) =>
+  tree.reduce((acc, node) => {
+    const {
+      type,
+      children,
+    } = node;
+    const newAcc = type === typeToSearch ? [...acc, node] : acc;
+    if (type === 'merged') {
+      return [...newAcc, ...getKeysOfType(children, typeToSearch)];
     }
     return newAcc;
   }, []);

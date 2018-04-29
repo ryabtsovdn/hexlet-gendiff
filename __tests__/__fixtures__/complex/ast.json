@@ -1,100 +1,96 @@
-{
-  "name": "",
-  "type": "merged",
-  "children": [
-    {
-      "name": "common",
-      "type": "merged",
-      "children": [
-        {
-          "name": "setting1",
-          "type": "unchanged",
-          "oldValue": "Value 1",
-          "newValue": "Value 1"
-        },
-        {
-          "name": "setting2",
-          "type": "deleted",
-          "oldValue": "200"
-        },
-        {
-          "name": "setting3",
-          "type": "changed",
-          "oldValue": true,
-          "newValue": {
-            "key": "value"
-          }
-        },
-        {
-          "name": "setting6",
-          "type": "merged",
-          "children": [
-            {
-              "name": "key",
-              "type": "unchanged",
-              "oldValue": "value",
-              "newValue": "value"
-            },
-            {
-              "name": "ops",
-              "type": "added",
-              "newValue": "vops"
-            }
-          ]
-        },
-        {
-          "name": "setting4",
-          "type": "added",
-          "newValue": "blah blah"
-        },
-        {
-          "name": "setting5",
-          "type": "added",
-          "newValue": {
-            "key5": "value5"
-          }
+[
+  {
+    "name": "common",
+    "type": "merged",
+    "children": [
+      {
+        "name": "setting1",
+        "type": "unchanged",
+        "oldValue": "Value 1",
+        "newValue": "Value 1"
+      },
+      {
+        "name": "setting2",
+        "type": "deleted",
+        "oldValue": "200"
+      },
+      {
+        "name": "setting3",
+        "type": "changed",
+        "oldValue": true,
+        "newValue": {
+          "key": "value"
         }
-      ]
-    },
-    {
-      "name": "group1",
-      "type": "merged",
-      "children": [
-        {
-          "name": "baz",
-          "type": "changed",
-          "oldValue": "bas",
-          "newValue": "bars"
-        },
-        {
-          "name": "foo",
-          "type": "unchanged",
-          "oldValue": "bar",
-          "newValue": "bar"
-        },
-        {
-          "name": "nest",
-          "type": "changed",
-          "oldValue": {
-            "key": "value"
+      },
+      {
+        "name": "setting6",
+        "type": "merged",
+        "children": [
+          {
+            "name": "key",
+            "type": "unchanged",
+            "oldValue": "value",
+            "newValue": "value"
           },
-          "newValue": "str"
+          {
+            "name": "ops",
+            "type": "added",
+            "newValue": "vops"
+          }
+        ]
+      },
+      {
+        "name": "setting4",
+        "type": "added",
+        "newValue": "blah blah"
+      },
+      {
+        "name": "setting5",
+        "type": "added",
+        "newValue": {
+          "key5": "value5"
         }
-      ]
-    },
-    {
-      "name": "group2",
-      "type": "deleted",
-      "oldValue": {
-        "abc": "12345"
       }
-    },
-    {
-      "name": "group3",
-      "type": "added",
-      "newValue": {
-        "fee": "100500"
+    ]
+  },
+  {
+    "name": "group1",
+    "type": "merged",
+    "children": [
+      {
+        "name": "baz",
+        "type": "changed",
+        "oldValue": "bas",
+        "newValue": "bars"
+      },
+      {
+        "name": "foo",
+        "type": "unchanged",
+        "oldValue": "bar",
+        "newValue": "bar"
+      },
+      {
+        "name": "nest",
+        "type": "changed",
+        "oldValue": {
+          "key": "value"
+        },
+        "newValue": "str"
       }
+    ]
+  },
+  {
+    "name": "group2",
+    "type": "deleted",
+    "oldValue": {
+      "abc": "12345"
     }
-  ]
-}
+  },
+  {
+    "name": "group3",
+    "type": "added",
+    "newValue": {
+      "fee": "100500"
+    }
+  }
+]
