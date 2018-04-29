@@ -1,6 +1,6 @@
 {
   "name": "di-gendiff",
-  "version": "0.4.1",
+  "version": "0.5.0",
   "description": "Compares two configuration files and shows a difference.",
   "main": "dist/index.js",
   "bin": {
@@ -40,9 +40,9 @@
     "debug": "^3.1.0",
     "eslint": "^4.19.1",
     "eslint-config-airbnb-base": "^12.1.0",
-    "eslint-plugin-babel": "^5.0.0",
+    "eslint-plugin-babel": "^5.1.0",
     "eslint-plugin-import": "^2.10.0",
-    "eslint-plugin-jest": "^21.15.0",
+    "eslint-plugin-jest": "^21.15.1",
     "jest": "^22",
     "jest-cli": "^22.4.3"
   },

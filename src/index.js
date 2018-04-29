@@ -59,7 +59,7 @@ export const genAST = (obj1, obj2, name = '') => {
   return { name, type: 'merged', children };
 };
 
-const genDiff = (path1, path2, format = 'default') => {
+const genDiff = (path1, path2, format = 'tree') => {
   const ext1 = extname(path1);
   const data1 = readFileSync(path1, 'utf8');
   const obj1 = getParser(ext1)(data1);

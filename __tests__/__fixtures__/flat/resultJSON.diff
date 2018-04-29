@@ -1,0 +1,1 @@
+{"configs":[{"keys":["proxy","timeout","host"],"total":3},{"keys":["timeout","host","verbose"],"total":3}],"keys":[{"type":"deleted","keys":["proxy"],"count":1},{"type":"added","keys":["verbose"],"count":1},{"type":"changed","keys":["timeout"],"count":1},{"type":"unchanged","keys":["host"],"count":1},{"type":"merged","keys":[],"count":0}]}

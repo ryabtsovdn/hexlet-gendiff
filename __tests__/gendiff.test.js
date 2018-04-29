@@ -14,7 +14,7 @@ describe('genAST', () => {
   });
 });
 
-describe('genDiff default', () => {
+describe('genDiff tree', () => {
   const expectedFlat = readFileSync('./__tests__/__fixtures__/flat/result.diff', 'utf8');
   const expectedComplex = readFileSync('./__tests__/__fixtures__/complex/result.diff', 'utf8');
 
@@ -132,6 +132,65 @@ describe('genDiff plain', () => {
       './__tests__/__fixtures__/complex/before.ini',
       './__tests__/__fixtures__/complex/after.ini',
       'plain',
+    );
+    expect(actual).toBe(expectedComplex);
+  });
+});
+
+describe('genDiff json', () => {
+  const expectedFlat = readFileSync('./__tests__/__fixtures__/flat/resultJSON.diff', 'utf8');
+  const expectedComplex = readFileSync('./__tests__/__fixtures__/complex/resultJSON.diff', 'utf8');
+
+  it('should compare flat JSONs', () => {
+    const actual = genDiff(
+      './__tests__/__fixtures__/flat/before.json',
+      './__tests__/__fixtures__/flat/after.json',
+      'json',
+    );
+    expect(actual).toBe(expectedFlat);
+  });
+
+  it('should compare flat YAMLs', () => {
+    const actual = genDiff(
+      './__tests__/__fixtures__/flat/before.yml',
+      './__tests__/__fixtures__/flat/after.yml',
+      'json',
+    );
+    expect(actual).toBe(expectedFlat);
+  });
+
+  it('should compare flat INIs', () => {
+    const actual = genDiff(
+      './__tests__/__fixtures__/flat/before.ini',
+      './__tests__/__fixtures__/flat/after.ini',
+      'json',
+    );
+    expect(actual).toBe(expectedFlat);
+  });
+
+  it('should compare complex JSONs', () => {
+    const actual = genDiff(
+      './__tests__/__fixtures__/complex/before.json',
+      './__tests__/__fixtures__/complex/after.json',
+      'json',
+    );
+    expect(actual).toBe(expectedComplex);
+  });
+
+  it('should compare complex YAMLs', () => {
+    const actual = genDiff(
+      './__tests__/__fixtures__/complex/before.yml',
+      './__tests__/__fixtures__/complex/after.yml',
+      'json',
+    );
+    expect(actual).toBe(expectedComplex);
+  });
+
+  it('should compare complex INIs', () => {
+    const actual = genDiff(
+      './__tests__/__fixtures__/complex/before.ini',
+      './__tests__/__fixtures__/complex/after.ini',
+      'json',
     );
     expect(actual).toBe(expectedComplex);
   });
