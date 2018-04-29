@@ -13,19 +13,18 @@ const builders = {
   },
   changed: ({ name, oldValue, newValue }, path) =>
     `Property '${path}${name}' was updated. From ${stringify(oldValue)} to ${stringify(newValue)}`,
-  merged: (tree, path) => {
-    const { name, children } = tree;
-    return children.map((node) => {
-      const build = builders[node.type];
-      return build(node, `${path}${name}.`);
-    });
-  },
+  merged: (tree, path, cb) => cb(tree, path),
 };
 
-export default ({ children }) => {
-  const builded = children.map((node) => {
+const buildNested = (tree, path) => {
+  const { name, children } = tree;
+  return children.map((node) => {
     const build = builders[node.type];
-    return build(node, '');
+    return build(node, name ? `${path}${name}.` : `${name}`, buildNested);
   });
+};
+
+export default (ast) => {
+  const builded = buildNested(ast);
   return flattenDeep(builded).join('\n');
 };
