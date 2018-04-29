@@ -167,7 +167,7 @@ describe('genDiff json', () => {
       './__tests__/__fixtures__/flat/after.ini',
       'json',
     );
-    console.log(actual);
+
     expect(JSON.parse(actual)).toEqual(JSON.parse(expectedFlat));
   });
 
