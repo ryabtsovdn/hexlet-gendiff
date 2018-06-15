@@ -34,11 +34,11 @@ $ make test
 Возможности утилиты:
 
 - Поддержка разных форматов
-- Генерация отчета в виде plain text, pretty и json
+- Генерация отчета в виде `plain text`, `pretty` и `json`
 
 ### Пример использования
 
-```
+```console
 $ gendiff --format plain first-config.ini second-config.ini
 Setting "common.setting2" deleted.
 Setting "common.setting4" added with value "blah blah".
